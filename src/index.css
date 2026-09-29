@@ -1,0 +1,356 @@
+@import 'tailwindcss';
+
+:root {
+  font-family: 'Inter', sans-serif;
+  color: #dedddc;
+  background: #3a3330;
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  --brown: #26211e;
+  --surface: #3a3330;
+  --white: #dedddc;
+  --orange: #ef6f2e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--surface);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: clip;
+  background: var(--surface);
+}
+
+button,
+input {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Desktop canvas (md+): keep the 1440 layout centered while viewport is narrower */
+@media (min-width: 768px) {
+  #root > [data-name] {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.pricing-bleed {
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+}
+.page-decor-pattern {
+  rotate: 90deg;
+}
+
+.page-decor-frame {
+  width: 768px;
+  height: 1440px;
+}
+
+/* Wide screens: allow full-bleed children to reach the viewport edges */
+@media (min-width: 1440px) {
+  #root > [data-name]:not([data-name='404_not_found']) {
+    overflow-x: visible !important;
+  }
+
+  #root > [data-name='404_not_found'] {
+    overflow: hidden !important;
+  }
+
+  /*
+   * Stretch an element to the full viewport width while keeping it
+   * centered relative to the 1440 design canvas.
+   * Uses left offset (not transform) so translate-y / other transforms still work.
+   */
+  .full-bleed {
+    left: calc(50% - 50vw) !important;
+    right: auto !important;
+    width: 100vw !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    --tw-translate-x: 0 !important;
+  }
+
+  /*
+   * Extend only the background to the viewport edges; children stay
+   * in the 1440 coordinate system.
+   */
+  .full-bleed-bg {
+    overflow: visible !important;
+  }
+
+  .full-bleed-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    background: inherit;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .full-bleed-bg > * {
+    z-index: 1;
+  }
+
+  /* Sticky header / bars: full-width fill, content aligned to 1440 stage */
+  .full-bleed-sticky {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding-left: max(48px, calc(50vw - 720px + 48px)) !important;
+    padding-right: max(48px, calc(50vw - 720px + 48px)) !important;
+  }
+
+  /*
+   * After rotate(90deg), frame height → visual width.
+   * Width stays 768px → visual height unchanged (band stays 768 tall).
+   */
+  .page-decor-frame {
+    height: 115vw;
+  }
+}
+
+[class*="font-['Oswald"],
+[class*="font-oswald"],
+.font-oswald {
+  font-family: 'Oswald', sans-serif !important;
+}
+
+[class*="font-['Inter"],
+[class*="font-inter"],
+.font-inter {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Tablet / small desktop: scale 1440 layouts. Phones use flow + max-md sizes in components. */
+@media (min-width: 768px) and (max-width: 1439px) {
+  #root > [data-name='Main'] {
+    transform: scale(calc(100vw / 1440));
+    transform-origin: top left;
+    margin-bottom: calc((100vw / 1440 - 1) * 13380px);
+  }
+
+  #root > [data-name='About'],
+  #root > [data-name='About_us_2'] {
+    transform: scale(calc(100vw / 1440));
+    transform-origin: top left;
+    margin-bottom: calc((100vw / 1440 - 1) * 9850px);
+  }
+
+  #root > [data-name='Classes'],
+  #root > [data-name='classes'] {
+    transform: scale(calc(100vw / 1440));
+    transform-origin: top left;
+    margin-bottom: calc((100vw / 1440 - 1) * 8712px);
+  }
+
+  #root > [data-name='Halls'] {
+    transform: scale(calc(100vw / 1440));
+    transform-origin: top left;
+    margin-bottom: calc((100vw / 1440 - 1) * 6368px);
+  }
+
+  #root > [data-name='Blog'] {
+    transform: scale(calc(100vw / 1440));
+    transform-origin: top left;
+    margin-bottom: calc((100vw / 1440 - 1) * 9283px);
+  }
+}
+
+@media (max-width: 767px) {
+  /*
+   * Mobile Figma canvas is 393px. Full-width blocks use
+   * w-[calc(100%-28px)] (14px gutters). Carousels may overflow.
+   */
+  html,
+  body,
+  #root {
+    overflow-x: clip;
+  }
+}
+
+html:has([data-name='404_not_found']),
+body:has([data-name='404_not_found']) {
+  overflow: hidden !important;
+  height: 100dvh;
+  max-height: 100dvh;
+  min-height: 0;
+  overscroll-behavior: none;
+}
+
+#root:has([data-name='404_not_found']) {
+  min-height: 0 !important;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.not-found-page {
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+@media (min-width: 768px) {
+  .not-found-page {
+    height: min(832px, 100dvh);
+    max-height: min(832px, 100dvh);
+    width: 100%;
+    max-width: 1440px;
+  }
+}
+
+@keyframes cities-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.cities-marquee {
+  display: flex;
+  width: max-content;
+  animation: cities-marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.cities-marquee.is-paused,
+.reviews-marquee-strip:hover .cities-marquee {
+  animation-play-state: paused;
+}
+
+.reviews-marquee-strip:active .cities-marquee {
+  animation-play-state: paused;
+}
+
+.cities-marquee__group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.tasai-watermark-marquee {
+  display: flex;
+  width: max-content;
+  animation: cities-marquee 48s linear infinite;
+  will-change: transform;
+}
+
+@keyframes pattern-marquee {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.pattern-marquee {
+  display: flex;
+  width: max-content;
+  animation: cities-marquee 48s linear infinite;
+  will-change: transform;
+}
+
+/* Long hero ornament (5378px × 2) — slower so the loop stays smooth */
+.ornament-marquee {
+  display: flex;
+  width: max-content;
+  animation: cities-marquee 90s linear infinite;
+  will-change: transform;
+}
+
+/* Mobile triangle / diamond strips — step = one overlapped tile */
+@keyframes ornament-strip-step {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-2 * var(--ornament-step, 466px)));
+  }
+}
+
+.ornament-strip-marquee {
+  display: flex;
+  width: max-content;
+  animation: ornament-strip-step 48s linear infinite;
+  will-change: transform;
+}
+
+@keyframes certificates-marquee {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.certificates-marquee {
+  animation: certificates-marquee 40s linear infinite;
+  will-change: transform;
+}
+
+@keyframes certs-marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.certs-marquee-x {
+  display: flex;
+  width: max-content;
+  animation: certs-marquee-x 36s linear infinite;
+  will-change: transform;
+}
+
+.certs-marquee-x.is-paused {
+  animation-play-state: paused;
+}
+
+.certificates-marquee.is-paused {
+  animation-play-state: paused;
+}
+
+.review-card__text {
+  overflow: hidden;
+  white-space: normal;
+}
+
+.review-card__text.is-truncated {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+  .review-card__text.is-truncated {
+    -webkit-line-clamp: 7;
+  }
+}

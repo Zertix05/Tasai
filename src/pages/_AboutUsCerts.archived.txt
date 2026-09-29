@@ -1,0 +1,224 @@
+/**
+ * Archived: certs carousel for AboutUsPage (desktop + mobile).
+ * Was only used on /about_us — nowhere else.
+ * To restore: uncomment usages in AboutUsPage and move these exports back (or import from here).
+ *
+ * Desktop was: <CertsCarousel />
+ * Mobile was: <MobileCertsSwipe className="..." style={{ top: certsTop }} />
+ * (also restore contactTop = certsTop + 384 + 64 on mobile, and desktop tops 8109 / 9007 / min-h 9852)
+ */
+
+/*
+import { useEffect, useState, type CSSProperties } from 'react'
+import { createPortal } from 'react-dom'
+import { cn } from '../lib/utils'
+
+const imgArrowWhite = '/assets/imgFrame3364167.svg'
+
+const CERT_SLIDES = [
+  '/assets/about/certs/cert-02.png',
+  '/assets/about/certs/wiki-01.png',
+  '/assets/about/certs/wiki-02.png',
+  '/assets/about/certs/wiki-03.png',
+  '/assets/about/certs/cert-04.png',
+] as const
+
+function CertLightbox({ src, onClose }: { src: string; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [onClose])
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[rgba(38,33,30,0.86)] p-4 md:p-6"
+      role="dialog"
+      aria-modal
+      aria-label="Сертификат"
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        aria-label="Закрыть"
+        onClick={onClose}
+        className="absolute top-4 right-4 z-10 flex size-10 items-center justify-center rounded-full bg-[rgba(222,221,220,0.12)] text-[#dedddc] transition-colors hover:bg-[rgba(222,221,220,0.22)] md:top-5 md:right-6 md:size-12"
+      >
+        <svg aria-hidden viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+      <img
+        alt=""
+        src={src}
+        className="max-h-[min(90vh,900px)] max-w-[min(90vw,1100px)] rounded-[16px] object-contain shadow-[0_8px_32px_rgba(0,0,0,0.45)]"
+        onClick={(event) => event.stopPropagation()}
+        draggable={false}
+      />
+    </div>,
+    document.body,
+  )
+}
+
+export function CertsCarousel() {
+  const [active, setActive] = useState(0)
+  const [openSrc, setOpenSrc] = useState<string | null>(null)
+  const total = CERT_SLIDES.length
+  const canSlide = total > 1
+  const offsets = canSlide ? ([-2, -1, 0, 1, 2] as const) : ([0] as const)
+
+  const go = (dir: -1 | 1) => {
+    if (!canSlide) return
+    setActive((prev) => (prev + dir + total) % total)
+  }
+
+  return (
+    <div
+      className="absolute top-[7441px] left-[-118px] flex w-[1677px] flex-col items-center justify-center gap-[16px]"
+      data-node-id="516:2826"
+    >
+      <div className="relative h-[567px] w-full">
+        {offsets.map((offset) => {
+          const index = (active + offset + total) % total
+          const isCenter = offset === 0
+          const width = isCenter ? 401 : 303
+          const height = isCenter ? 567 : 428.31
+          const gap = 16
+          const centerX = 838.5
+          const left =
+            centerX +
+            offset * (303 + gap) +
+            (offset === 0
+              ? -width / 2
+              : offset > 0
+                ? -width / 2 + (401 - 303) / 2
+                : -width / 2 - (401 - 303) / 2)
+          const src = CERT_SLIDES[index]
+
+          return (
+            <button
+              key={`${index}-${offset}`}
+              type="button"
+              aria-label={`Открыть сертификат ${index + 1}`}
+              onClick={() => setOpenSrc(src)}
+              className={cn(
+                'absolute cursor-pointer overflow-hidden border-0 bg-white p-0 shadow-[0_8px_32px_rgba(0,0,0,0.35)] transition-all duration-300',
+                !isCenter && 'opacity-80',
+              )}
+              style={{
+                width,
+                height,
+                left,
+                bottom: isCenter ? 0 : 0,
+                top: isCenter ? 0 : 138.69,
+                zIndex: isCenter ? 20 : 10 - Math.abs(offset),
+              }}
+            >
+              <img
+                alt={`Сертификат ${index + 1}`}
+                className="absolute inset-0 size-full max-w-none object-cover"
+                src={src}
+                draggable={false}
+              />
+            </button>
+          )
+        })}
+
+        <button
+          type="button"
+          aria-label="Предыдущий сертификат"
+          onClick={() => go(-1)}
+          className="group absolute top-0 left-[319px] z-30 flex items-center gap-[8px] rounded-[100px] border-2 border-[#dedddc] bg-transparent p-[16px] transition-colors hover:border-[#ef6f2e] hover:bg-transparent active:border-[#ef6f2e] active:bg-transparent"
+        >
+          <span className="relative block size-[32px] rotate-180">
+            <img
+              alt=""
+              className="absolute inset-0 block size-full max-w-none transition-[filter] group-hover:[filter:brightness(0)_saturate(100%)_invert(48%)_sepia(79%)_saturate(1486%)_hue-rotate(346deg)_brightness(99%)_contrast(91%)] group-active:[filter:brightness(0)_saturate(100%)_invert(48%)_sepia(79%)_saturate(1486%)_hue-rotate(346deg)_brightness(99%)_contrast(91%)]"
+              src={imgArrowWhite}
+            />
+          </span>
+        </button>
+        <button
+          type="button"
+          aria-label="Следующий сертификат"
+          onClick={() => go(1)}
+          className="group absolute top-0 left-[1294px] z-30 flex items-center gap-[8px] rounded-[100px] border-2 border-[#dedddc] bg-transparent p-[16px] transition-colors hover:border-[#ef6f2e] hover:bg-transparent active:border-[#ef6f2e] active:bg-transparent"
+        >
+          <span className="relative block size-[32px]">
+            <img
+              alt=""
+              className="absolute inset-0 block size-full max-w-none transition-[filter] group-hover:[filter:brightness(0)_saturate(100%)_invert(48%)_sepia(79%)_saturate(1486%)_hue-rotate(346deg)_brightness(99%)_contrast(91%)] group-active:[filter:brightness(0)_saturate(100%)_invert(48%)_sepia(79%)_saturate(1486%)_hue-rotate(346deg)_brightness(99%)_contrast(91%)]"
+              src={imgArrowWhite}
+            />
+          </span>
+        </button>
+      </div>
+      {openSrc ? <CertLightbox src={openSrc} onClose={() => setOpenSrc(null)} /> : null}
+    </div>
+  )
+}
+
+const MOBILE_CERTS = ['/assets/about/certs/cert-mobile-1.png', ...CERT_SLIDES] as const
+
+export function MobileCertsSwipe({
+  className,
+  style,
+}: {
+  className?: string
+  style?: CSSProperties
+}) {
+  const [openSrc, setOpenSrc] = useState<string | null>(null)
+  const [paused, setPaused] = useState(false)
+
+  return (
+    <div className={cn('z-10 overflow-hidden', className)} style={style}>
+      <div
+        className={cn('certs-marquee-x h-[384px] items-center', (paused || openSrc) && 'is-paused')}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => {
+          window.setTimeout(() => setPaused(false), 350)
+        }}
+      >
+        {[0, 1].map((group) => (
+          <div
+            key={group}
+            className={cn(
+              'flex h-full shrink-0 items-center gap-2 pr-2',
+              group === 1 && 'pointer-events-none',
+            )}
+            aria-hidden={group === 1 || undefined}
+          >
+            {MOBILE_CERTS.map((src, i) => (
+              <button
+                key={`${group}-${src}`}
+                type="button"
+                aria-label={group === 0 ? `Открыть сертификат ${i + 1}` : undefined}
+                tabIndex={group === 0 ? 0 : -1}
+                onClick={() => setOpenSrc(src)}
+                className="h-[384px] w-[272px] shrink-0 cursor-pointer overflow-hidden rounded-xl border-0 bg-white p-0"
+              >
+                <img
+                  alt={group === 0 ? `Пасведчанне ${i + 1}` : ''}
+                  className="pointer-events-none size-full object-cover"
+                  src={src}
+                  draggable={false}
+                />
+              </button>
+            ))}
+          </div>
+        ))}
+      </div>
+      {openSrc ? <CertLightbox src={openSrc} onClose={() => setOpenSrc(null)} /> : null}
+    </div>
+  )
+}
+*/

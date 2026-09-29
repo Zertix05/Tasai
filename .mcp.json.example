@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "figmingo": {
+      "command": "npx",
+      "args": ["-y", "figmingo-mcp"],
+      "env": {
+        "FIGMA_API_KEY": "YOUR_FIGMA_TOKEN_HERE",
+        "FIGMA_FILE_ID": "vlUYXXuFzYqVJQ5fgTErJp"
+      }
+    }
+  }
+}

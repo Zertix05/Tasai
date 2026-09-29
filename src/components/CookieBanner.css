@@ -1,0 +1,52 @@
+/* Unlayered so it wins over global `button { font: inherit }` */
+.cookie-banner__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 500px;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 32px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #26211e;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cookie-banner__btn--accept {
+  background: #ef6f2e;
+}
+
+.cookie-banner__btn--accept:hover,
+.cookie-banner__btn--accept:focus-visible {
+  background: #26211e;
+  color: #ef6f2e;
+}
+
+.cookie-banner__btn--decline {
+  background: #dedddc;
+}
+
+.cookie-banner__btn--decline:hover,
+.cookie-banner__btn--decline:focus-visible {
+  background: #26211e;
+  color: #ef6f2e;
+}
+
+.cookie-banner__btn--sm {
+  width: 100%;
+  height: 48px;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+.cookie-banner__btn--lg {
+  width: 328px;
+  height: auto;
+  padding: 16px 32px;
+  font-size: 28px;
+}

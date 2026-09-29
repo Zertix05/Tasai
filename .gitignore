@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.*
+!.env.example
+
+# Local MCP config may contain API tokens
+.mcp.json
+
+# amoCRM secrets (never commit tokens)
+public/api/amocrm.secrets.php
+
+# Local scratch / tooling (not part of the site)
+tmp-mobile/
+tmp-classes/
+tmp-blog*
+.tmp-chrome*/
+.tmp-shots/
+.tmp-*
+*.tgz
+dist.zip
+home-bottom-check.png
+package/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
